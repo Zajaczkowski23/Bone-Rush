@@ -1,0 +1,79 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvhvbieokioxm"]
+
+[ext_resource type="Script" uid="uid://bu2f3k7cfx733" path="res://addons/virtual_joystick_DX/vjdx_core_script.gd" id="1_t6lng"]
+[ext_resource type="Script" path="res://player.gd" id="2_player"]
+[ext_resource type="Script" path="res://game.gd" id="3_game"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
+radius = 16.0
+
+[node name="Node2D" type="Node2D" unique_id=191590412]
+script = ExtResource("3_game")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=2056443802 groups=["player"]]
+position = Vector2(576, 324)
+script = ExtResource("2_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_player")
+
+[node name="Polygon2D" type="Polygon2D" parent="Player"]
+color = Color(0.4, 0.95, 0.85, 1)
+polygon = PackedVector2Array(24, 0, -16, -15, -16, 15)
+
+[node name="EnemySpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2114332588]
+
+[node name="PlayerHealthLabel" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 8.0
+offset_right = 264.0
+offset_bottom = 30.0
+text = "PLAYER HEALTH"
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 32.0
+offset_right = 264.0
+offset_bottom = 56.0
+mouse_filter = 2
+value = 100.0
+
+[node name="GameOverLabel" type="Label" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 20.0
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VirtualJoystickDX" type="Control" parent="CanvasLayer" unique_id=1154541628]
+layout_mode = 1
+anchors_preset = 0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -220.0
+offset_right = 200.0
+offset_bottom = -60.0
+pivot_offset = Vector2(80, 80)
+mouse_filter = 2
+script = ExtResource("1_t6lng")
+use_active_region = false
+"Colors - D-Pad" = null
+"Textures - D-Pad" = null
+Cardinals = null
+Diagonals = null
+metadata/_custom_type_script = "uid://bu2f3k7cfx733"
+metadata/_edit_use_anchors_ = true
