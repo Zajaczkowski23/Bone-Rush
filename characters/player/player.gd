@@ -81,13 +81,16 @@ func _fire_beam(target: Area2D) -> void:
 	tween.tween_callback(beam.queue_free)
 
 
-func take_damage(amount: int) -> void:
-	if amount <= 0 or health <= 0 or _damage_cooldown_left > 0.0:
+func take_damage(amount: int, use_cooldown: bool = true) -> void:
+	if amount <= 0 or health <= 0:
+		return
+	if use_cooldown and _damage_cooldown_left > 0.0:
 		return
 
 	health = maxi(health - amount, 0)
 	health_bar.value = health
-	_damage_cooldown_left = damage_cooldown
+	if use_cooldown:
+		_damage_cooldown_left = damage_cooldown
 	if health == 0:
 		velocity = Vector2.ZERO
 		set_physics_process(false)

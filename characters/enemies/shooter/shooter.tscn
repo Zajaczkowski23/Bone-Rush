@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://characters/enemies/shooter/shooter.gd" id="1_shooter"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shooter"]
+radius = 16.0
+
+[node name="Shooter" type="Area2D" groups=["enemies"]]
+script = ExtResource("1_shooter")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_shooter")
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.65, 0.3, 0.85, 1)
+polygon = PackedVector2Array(-17, -12, 17, -12, 17, 12, -17, 12)
+
+[node name="Barrel" type="Polygon2D" parent="."]
+color = Color(1, 0.5, 0.9, 1)
+polygon = PackedVector2Array(-3, -4, 23, -4, 23, 4, -3, 4)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -24.0
+offset_top = -32.0
+offset_right = 24.0
+offset_bottom = -24.0
+mouse_filter = 2
+max_value = 30.0
+value = 30.0
+show_percentage = false

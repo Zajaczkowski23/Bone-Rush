@@ -2,8 +2,11 @@ extends Node2D
 
 const PlayArea = preload("res://game/play_area.gd")
 const ENEMY_SCENE: PackedScene = preload("res://characters/enemies/enemy/enemy.tscn")
+const SHOOTER_SCENE: PackedScene = preload("res://characters/enemies/shooter/shooter.tscn")
 
 @export var max_enemies: int = 10
+
+var _spawn_count: int = 0
 
 
 func _ready() -> void:
@@ -17,6 +20,8 @@ func _spawn_enemy() -> void:
 	if get_tree().get_nodes_in_group("enemies").size() >= max_enemies:
 		return
 
-	var enemy := ENEMY_SCENE.instantiate() as Area2D
+	var scene := SHOOTER_SCENE if _spawn_count % 3 == 0 else ENEMY_SCENE
+	_spawn_count += 1
+	var enemy := scene.instantiate() as Area2D
 	add_child(enemy)
 	enemy.global_position = PlayArea.random_edge_position(self, 36.0)
