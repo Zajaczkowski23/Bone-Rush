@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://items/weapon_drop.gd" id="1_drop"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 25.0
+
+[node name="WeaponDrop" type="Area2D"]
+script = ExtResource("1_drop")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.22, 0.29, 0.36, 1)
+polygon = PackedVector2Array(-18, -7, 9, -7, 9, 7, -18, 7)
+
+[node name="Barrel" type="Polygon2D" parent="."]
+color = Color(0.45, 1, 1, 1)
+polygon = PackedVector2Array(9, -3, 21, -3, 21, 3, 9, 3)
+
+[node name="Grip" type="Polygon2D" parent="."]
+color = Color(0.22, 0.29, 0.36, 1)
+polygon = PackedVector2Array(-11, 7, -2, 7, -5, 18, -12, 18)

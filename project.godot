@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Bone Rush"
-run/main_scene="uid://cvhvbieokioxm"
+run/main_scene="res://game/game.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

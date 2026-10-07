@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvhvbieokioxm"]
+[gd_scene load_steps=6 format=3 uid="uid://cvhvbieokioxm"]
 
 [ext_resource type="Script" uid="uid://bu2f3k7cfx733" path="res://addons/virtual_joystick_DX/vjdx_core_script.gd" id="1_t6lng"]
-[ext_resource type="Script" path="res://player.gd" id="2_player"]
-[ext_resource type="Script" path="res://game.gd" id="3_game"]
+[ext_resource type="Script" path="res://characters/player/player.gd" id="2_player"]
+[ext_resource type="Script" path="res://game/game.gd" id="3_game"]
+[ext_resource type="PackedScene" path="res://items/weapon_drop.tscn" id="4_drop"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 16.0
@@ -25,6 +26,9 @@ polygon = PackedVector2Array(24, 0, -16, -15, -16, 15)
 wait_time = 2.0
 autostart = true
 
+[node name="WeaponDrop" parent="." instance=ExtResource("4_drop")]
+position = Vector2(736, 324)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2114332588]
 
 [node name="PlayerHealthLabel" type="Label" parent="CanvasLayer"]
@@ -41,6 +45,14 @@ offset_right = 264.0
 offset_bottom = 56.0
 mouse_filter = 2
 value = 100.0
+
+[node name="PickupLabel" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 24.0
+offset_top = 64.0
+offset_right = 264.0
+offset_bottom = 88.0
+text = "WEAPON COLLECTED"
 
 [node name="GameOverLabel" type="Label" parent="CanvasLayer"]
 visible = false

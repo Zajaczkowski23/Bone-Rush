@@ -1,5 +1,8 @@
 extends Area2D
 
+const PlayArea = preload("res://game/play_area.gd")
+const EDGE_MARGIN: float = 36.0
+
 @export var move_speed: float = 110.0
 @export var max_health: int = 30
 @export var contact_damage: int = 10
@@ -26,6 +29,7 @@ func _physics_process(delta: float) -> void:
 			player.global_position,
 			minf(move_speed * delta, distance - 18.0)
 		)
+	PlayArea.keep_inside(self, EDGE_MARGIN)
 
 	for body in get_overlapping_bodies():
 		if body.is_in_group("player"):

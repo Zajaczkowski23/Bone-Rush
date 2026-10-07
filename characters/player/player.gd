@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+const PlayArea = preload("res://game/play_area.gd")
+const EDGE_MARGIN: float = 24.0
+
 @export var move_speed: float = 260.0
 @export var max_health: int = 100
 @export var damage_cooldown: float = 0.75
@@ -8,15 +11,17 @@ extends CharacterBody2D
 @export var beam_damage: int = 10
 
 var health: int
+var has_weapon_drop: bool = false
 var _damage_cooldown_left: float = 0.0
 var _fire_cooldown_left: float = 0.0
 
 @onready var health_bar: ProgressBar = $"../CanvasLayer/PlayerHealthBar"
 @onready var game_over_label: Label = $"../CanvasLayer/GameOverLabel"
+@onready var pickup_label: Label = $"../CanvasLayer/PickupLabel"
 
 
 func _ready() -> void:
-	global_position = get_viewport_rect().size * 0.5
+	global_position = PlayArea.center_for(self)
 	health = max_health
 	health_bar.max_value = max_health
 	health_bar.value = health
@@ -33,6 +38,7 @@ func _physics_process(delta: float) -> void:
 
 	velocity = direction * move_speed
 	move_and_slide()
+	PlayArea.keep_inside(self, EDGE_MARGIN)
 
 	if direction != Vector2.ZERO:
 		rotation = direction.angle()
@@ -86,3 +92,11 @@ func take_damage(amount: int) -> void:
 		velocity = Vector2.ZERO
 		set_physics_process(false)
 		game_over_label.show()
+
+
+func collect_weapon_drop() -> bool:
+	if has_weapon_drop:
+		return false
+	has_weapon_drop = true
+	pickup_label.show()
+	return true

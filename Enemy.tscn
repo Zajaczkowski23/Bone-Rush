@@ -1,21 +1,21 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://7emepqfwanj2"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_enemy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy"]
 radius = 14.0
 
-[node name="Enemy" type="Area2D" groups=["enemies"]]
+[node name="Enemy" type="Area2D" unique_id=578942140 groups=["enemies"]]
 script = ExtResource("1_enemy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=394978473]
 shape = SubResource("CircleShape2D_enemy")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=1055566969]
 color = Color(1, 0.35, 0.4, 1)
 polygon = PackedVector2Array(0, -18, 18, 0, 0, 18, -18, 0)
 
-[node name="HealthBar" type="ProgressBar" parent="."]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1277940020]
 offset_left = -24.0
 offset_top = -32.0
 offset_right = 24.0
