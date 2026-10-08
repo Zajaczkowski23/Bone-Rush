@@ -1,11 +1,14 @@
 extends Area2D
 
+signal defeated(points: int)
+
 const PlayArea = preload("res://game/play_area.gd")
 const EDGE_MARGIN: float = 36.0
 
 @export var move_speed: float = 110.0
 @export var max_health: int = 30
 @export var contact_damage: int = 10
+@export var score_value: int = 10
 
 var health: int
 
@@ -43,4 +46,5 @@ func take_damage(amount: int) -> void:
 	health = maxi(health - amount, 0)
 	health_bar.value = health
 	if health == 0:
+		defeated.emit(score_value)
 		queue_free()

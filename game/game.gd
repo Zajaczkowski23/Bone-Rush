@@ -6,7 +6,10 @@ const SHOOTER_SCENE: PackedScene = preload("res://characters/enemies/shooter/sho
 
 @export var max_enemies: int = 10
 
+var score: int = 0
 var _spawn_count: int = 0
+
+@onready var score_label: Label = $CanvasLayer/ScoreLabel
 
 
 func _ready() -> void:
@@ -23,5 +26,11 @@ func _spawn_enemy() -> void:
 	var scene := SHOOTER_SCENE if _spawn_count % 3 == 0 else ENEMY_SCENE
 	_spawn_count += 1
 	var enemy := scene.instantiate() as Area2D
+	enemy.connect("defeated", _on_enemy_defeated)
 	add_child(enemy)
 	enemy.global_position = PlayArea.random_edge_position(self, 36.0)
+
+
+func _on_enemy_defeated(points: int) -> void:
+	score += points
+	score_label.text = "SCORE: %d" % score

@@ -7,6 +7,7 @@ radius = 16.0
 
 [node name="Shooter" type="Area2D" groups=["enemies"]]
 script = ExtResource("1_shooter")
+score_value = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_shooter")
