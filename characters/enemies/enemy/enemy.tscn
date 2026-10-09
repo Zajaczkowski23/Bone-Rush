@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://characters/enemies/enemy/enemy.gd" id="1_enemy"]
+
+[ext_resource type="SpriteFrames" path="res://characters/enemies/enemy/skeleton_frames.tres" id="2_skeleton"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy"]
 radius = 14.0
@@ -11,9 +13,18 @@ script = ExtResource("1_enemy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_enemy")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(1, 0.35, 0.4, 1)
-polygon = PackedVector2Array(0, -18, 18, 0, 0, 18, -18, 0)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -8)
+sprite_frames = ExtResource("2_skeleton")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 3.0
+target_desired_distance = 8.0
+path_max_distance = 32.0
+radius = 14.0
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -24.0

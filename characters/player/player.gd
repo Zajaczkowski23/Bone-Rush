@@ -1,27 +1,35 @@
 extends CharacterBody2D
 
 const PlayArea = preload("res://game/play_area.gd")
+const SwordSweep = preload("res://characters/player/sword_sweep.gd")
 const EDGE_MARGIN: float = 24.0
 
 @export var move_speed: float = 260.0
 @export var max_health: int = 100
 @export var damage_cooldown: float = 0.75
-@export var fire_range: float = 300.0
-@export var fire_interval: float = 0.7
-@export var beam_damage: int = 10
+@export var attack_range: float = 100.0
+@export var attack_interval: float = 0.7
+@export var sword_damage: int = 10
+
+var _is_attacking: bool = false
+var _swing_has_hit: bool = false
+var _sword_sweep: Node2D
 
 var health: int
-var has_weapon_drop: bool = false
 var _damage_cooldown_left: float = 0.0
-var _fire_cooldown_left: float = 0.0
+var _attack_cooldown_left: float = 0.0
+var _damage_flash_tween: Tween
 
 @onready var health_bar: ProgressBar = $"../CanvasLayer/PlayerHealthBar"
 @onready var game_over_label: Label = $"../CanvasLayer/GameOverLabel"
-@onready var pickup_label: Label = $"../CanvasLayer/PickupLabel"
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var _sprite_base_color: Color = sprite.modulate
 
 
 func _ready() -> void:
 	global_position = PlayArea.center_for(self)
+	sprite.frame_changed.connect(_on_attack_frame_changed)
+	sprite.animation_finished.connect(_on_animation_finished)
 	health = max_health
 	health_bar.max_value = max_health
 	health_bar.value = health
@@ -29,7 +37,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_damage_cooldown_left = maxf(_damage_cooldown_left - delta, 0.0)
-	_fire_cooldown_left = maxf(_fire_cooldown_left - delta, 0.0)
+	_attack_cooldown_left = maxf(_attack_cooldown_left - delta, 0.0)
 
 	var direction := Vector2(
 		Input.get_axis("ui_left", "ui_right"),
@@ -40,45 +48,58 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	PlayArea.keep_inside(self, EDGE_MARGIN)
 
-	if direction != Vector2.ZERO:
-		rotation = direction.angle()
+	if not _is_attacking:
+		sprite.play("run" if direction != Vector2.ZERO else "idle")
+		if direction.x != 0.0:
+			sprite.flip_h = direction.x < 0.0
 
-	if _fire_cooldown_left == 0.0:
-		var target := _nearest_enemy()
-		if target != null:
-			_fire_beam(target)
-			_fire_cooldown_left = fire_interval
+	if not _is_attacking and _attack_cooldown_left == 0.0:
+		if _has_nearby_enemy():
+			_start_sword_attack()
+			_attack_cooldown_left = attack_interval
 
 
-func _nearest_enemy() -> Area2D:
-	var nearest: Area2D = null
-	var nearest_distance_squared := fire_range * fire_range
+func _has_nearby_enemy() -> bool:
 	for node in get_tree().get_nodes_in_group("enemies"):
 		var enemy := node as Area2D
 		if enemy == null or enemy.is_queued_for_deletion():
 			continue
-		var distance_squared := global_position.distance_squared_to(enemy.global_position)
-		if distance_squared <= nearest_distance_squared:
-			nearest = enemy
-			nearest_distance_squared = distance_squared
-	return nearest
+		if global_position.distance_squared_to(enemy.global_position) <= attack_range * attack_range:
+			return true
+	return false
 
 
-func _fire_beam(target: Area2D) -> void:
-	var beam := Line2D.new()
-	beam.width = 6.0
-	beam.default_color = Color(0.45, 1.0, 1.0)
-	beam.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	beam.end_cap_mode = Line2D.LINE_CAP_ROUND
-	get_parent().add_child(beam)
-	beam.points = PackedVector2Array([
-		beam.to_local(global_position),
-		beam.to_local(target.global_position)
-	])
-	target.call("take_damage", beam_damage)
-	var tween := beam.create_tween()
-	tween.tween_property(beam, "modulate:a", 0.0, 0.15)
-	tween.tween_callback(beam.queue_free)
+func _start_sword_attack() -> void:
+	_is_attacking = true
+	_swing_has_hit = false
+	sprite.play("attack")
+	_sword_sweep = SwordSweep.new()
+	_sword_sweep.radius = attack_range
+	_sword_sweep.duration = sprite.sprite_frames.get_frame_count(&"attack") / sprite.sprite_frames.get_animation_speed(&"attack")
+	add_child(_sword_sweep)
+
+
+func _on_attack_frame_changed() -> void:
+	if not _is_attacking or _swing_has_hit or sprite.animation != &"attack" or sprite.frame != 2:
+		return
+	_swing_has_hit = true
+	if health <= 0:
+		return
+	for node in get_tree().get_nodes_in_group("enemies"):
+		var enemy := node as Area2D
+		if enemy == null or enemy.is_queued_for_deletion():
+			continue
+		if global_position.distance_squared_to(enemy.global_position) <= attack_range * attack_range:
+			enemy.call("take_damage", sword_damage)
+
+
+func _on_animation_finished() -> void:
+	if sprite.animation != &"attack":
+		return
+	_is_attacking = false
+	_swing_has_hit = false
+	if health > 0:
+		sprite.play("run" if velocity != Vector2.ZERO else "idle")
 
 
 func take_damage(amount: int, use_cooldown: bool = true) -> void:
@@ -89,17 +110,23 @@ func take_damage(amount: int, use_cooldown: bool = true) -> void:
 
 	health = maxi(health - amount, 0)
 	health_bar.value = health
+	_play_damage_flash()
 	if use_cooldown:
 		_damage_cooldown_left = damage_cooldown
 	if health == 0:
 		velocity = Vector2.ZERO
+		_is_attacking = false
+		_swing_has_hit = false
+		if is_instance_valid(_sword_sweep):
+			_sword_sweep.queue_free()
+		sprite.stop()
 		set_physics_process(false)
 		game_over_label.show()
 
 
-func collect_weapon_drop() -> bool:
-	if has_weapon_drop:
-		return false
-	has_weapon_drop = true
-	pickup_label.show()
-	return true
+func _play_damage_flash() -> void:
+	if _damage_flash_tween != null and _damage_flash_tween.is_valid():
+		_damage_flash_tween.kill()
+	_damage_flash_tween = create_tween()
+	_damage_flash_tween.tween_property(sprite, "modulate", _sprite_base_color * Color(1.0, 0.3, 0.3, 1.0), 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_damage_flash_tween.tween_property(sprite, "modulate", _sprite_base_color, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
