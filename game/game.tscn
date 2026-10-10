@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://ca3vlayt33joa" path="res://assets/Tiny Swords (Free Pack)/Terrain/Tileset/Tilemap_color1.png" id="6_dakft"]
 [ext_resource type="Script" uid="uid://c7d2a2nu5xuiq" path="res://game/level_progression.gd" id="level_progression"]
 [ext_resource type="PackedScene" path="res://game/level_up_panel.tscn" id="level_up_panel"]
+[ext_resource type="Script" path="res://game/wave_director.gd" id="wave_director"]
+[ext_resource type="PackedScene" path="res://game/victory_panel.tscn" id="victory_panel"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D2.tres" id="wall_CollisionShape2D2"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D3.tres" id="wall_CollisionShape2D3"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D4.tres" id="wall_CollisionShape2D4"]
@@ -816,11 +818,54 @@ sprite_frames = ExtResource("5_warrior")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="EnemySpawnTimer" type="Timer" parent="." unique_id=2085992938]
-wait_time = 2.0
-autostart = true
+[node name="WaveDirector" type="Node" parent="."]
+script = ExtResource("wave_director")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2114332588]
+
+[node name="WaveLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_top = 12.0
+offset_right = 80.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 22
+text = "WAVE 1"
+horizontal_alignment = 1
+
+[node name="WaveStatus" type="Label" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 126.0
+offset_right = 160.0
+offset_bottom = 194.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.65, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextWaveButton" type="Button" parent="CanvasLayer"]
+visible = false
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 208.0
+offset_right = 120.0
+offset_bottom = 256.0
+text = "START NEXT WAVE"
 
 [node name="PlayerHealthLabel" type="Label" parent="CanvasLayer" unique_id=1374351227]
 offset_left = 24.0
@@ -904,6 +949,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="LevelUpPanel" parent="CanvasLayer" unique_id=1004424130 instance=ExtResource("level_up_panel")]
 
+[node name="VictoryPanel" parent="CanvasLayer" instance=ExtResource("victory_panel")]
+
 [node name="Ground" type="TileMapLayer" parent="." unique_id=433048243]
 z_index = -10
 texture_filter = 1
@@ -952,7 +999,3 @@ shape = ExtResource("wall_CollisionShape2D4")
 position = Vector2(1698, 1057)
 rotation = 1.5707964
 shape = ExtResource("wall_CollisionShape2D5")
-
-[node name="MinibossSpawnTimer" type="Timer" parent="." unique_id=968461674]
-wait_time = 30.0
-autostart = true

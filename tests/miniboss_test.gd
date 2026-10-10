@@ -10,19 +10,17 @@ func _expect(condition: bool, message: String) -> void:
 func _run() -> void:
 	var game = load("res://game/game.tscn").instantiate()
 	root.add_child(game)
-	game.get_node("EnemySpawnTimer").stop()
+	game.get_node("WaveDirector").set_process(false)
 	for spawned in get_nodes_in_group("enemies"): spawned.free()
 	game.player.set_physics_process(false)
 	_expect(game.has_method("_spawn_miniboss"), "Game must spawn the distinct skeleton miniboss")
 	if failures:
 		quit(1)
 		return
-	var timer = game.get_node("MinibossSpawnTimer")
-	_expect(timer.wait_time == 30.0 and not timer.is_stopped(), "Miniboss must be scheduled during gameplay")
-	timer.stop()
-	timer.timeout.emit()
+	_expect(get_nodes_in_group("minibosses").is_empty(), "Miniboss must wait for the final wave instead of spawning on a timer")
+	game._spawn_miniboss()
 	var bosses = get_nodes_in_group("minibosses")
-	_expect(bosses.size() == 1, "Timer must spawn one miniboss")
+	_expect(bosses.size() == 1, "Miniboss factory must create one distinct boss")
 	var boss = bosses[0]
 	boss.set_physics_process(false)
 	game._spawn_miniboss()

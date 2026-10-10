@@ -19,8 +19,12 @@ static func keep_inside(node: Node2D, margin: float) -> void:
 
 
 static func random_edge_position(node: Node2D, margin: float) -> Vector2:
+	return edge_position(node, randi_range(0, 3), margin)
+
+
+static func edge_position(node: Node2D, edge: int, margin: float) -> Vector2:
 	var bounds := bounds_for(node, margin)
-	match randi_range(0, 3):
+	match edge:
 		0:
 			return Vector2(randf_range(bounds.position.x, bounds.end.x), bounds.position.y)
 		1:

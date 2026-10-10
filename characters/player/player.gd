@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal died
+
 const PlayArea = preload("res://game/play_area.gd")
 const SwordSweep = preload("res://characters/player/sword_sweep.gd")
 const UpgradeDefinition = preload("res://game/upgrades/upgrade_definition.gd")
@@ -123,6 +125,7 @@ func take_damage(amount: int, use_cooldown: bool = true) -> void:
 		sprite.stop()
 		set_physics_process(false)
 		game_over_label.show()
+		died.emit()
 
 
 func apply_upgrade(upgrade: UpgradeDefinition) -> bool:

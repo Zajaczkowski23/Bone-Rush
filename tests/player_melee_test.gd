@@ -13,7 +13,7 @@ func _expect(condition: bool, message: String) -> void:
 func _run() -> void:
 	var game = load("res://game/game.tscn").instantiate()
 	root.add_child(game)
-	game.get_node("EnemySpawnTimer").stop()
+	game.get_node("WaveDirector").set_process(false)
 	for spawned in get_nodes_in_group("enemies"):
 		spawned.free()
 	var player = game.get_node("Player")

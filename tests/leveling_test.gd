@@ -16,7 +16,7 @@ func _expect(condition: bool, message: String) -> void:
 func _new_game():
 	var game = load("res://game/game.tscn").instantiate()
 	root.add_child(game)
-	game.get_node("EnemySpawnTimer").stop()
+	game.get_node("WaveDirector").set_process(false)
 	for enemy in get_nodes_in_group("enemies"):
 		enemy.free()
 	game.get_node("Player").set_physics_process(false)
@@ -73,12 +73,12 @@ func _run() -> void:
 	Input.parse_input_event(touch)
 	await process_frame
 	_expect(root.gui_get_focus_owner() is Button, "Keyboard focus must start on an upgrade button")
-	var timer = game.get_node("EnemySpawnTimer")
-	timer.start(0.1)
-	var remaining: float = timer.time_left
+	var director = game.get_node("WaveDirector")
+	director.set_process(true)
+	var remaining: float = director.phase_left
 	await create_timer(0.15).timeout
-	_expect(is_equal_approx(timer.time_left, remaining) and get_nodes_in_group("enemies").is_empty(), "Spawning must freeze throughout reward selection")
-	timer.stop()
+	_expect(is_equal_approx(director.phase_left, remaining) and get_nodes_in_group("enemies").is_empty(), "Spawning must freeze throughout reward selection")
+	director.set_process(false)
 	panel._select_upgrade(-1)
 	panel._select_upgrade(3)
 	_expect(panel.visible and paused, "Invalid selections must not dismiss or consume a reward")
