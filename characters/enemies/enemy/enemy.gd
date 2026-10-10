@@ -9,6 +9,7 @@ const EDGE_MARGIN: float = 36.0
 @export var max_health: int = 30
 @export var contact_damage: int = 10
 @export var score_value: int = 10
+@export var xp_value: int = 10
 @export var attack_range: float = 40.0
 @export var attack_interval: float = 0.9
 @export_flags_2d_physics var wall_collision_mask: int = 2

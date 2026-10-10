@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/upgrades/upgrade_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "VITALITY"
+description = "+20 maximum HP and heal 20 HP"
+stat = "max_health"
+amount = 20.0

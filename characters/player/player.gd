@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 const PlayArea = preload("res://game/play_area.gd")
 const SwordSweep = preload("res://characters/player/sword_sweep.gd")
+const UpgradeDefinition = preload("res://game/upgrades/upgrade_definition.gd")
 const EDGE_MARGIN: float = 24.0
 
 @export var move_speed: float = 260.0
@@ -122,6 +123,26 @@ func take_damage(amount: int, use_cooldown: bool = true) -> void:
 		sprite.stop()
 		set_physics_process(false)
 		game_over_label.show()
+
+
+func apply_upgrade(upgrade: UpgradeDefinition) -> bool:
+	if upgrade == null or health <= 0:
+		return false
+	match upgrade.stat:
+		&"sword_damage":
+			sword_damage += int(upgrade.amount)
+		&"max_health":
+			max_health += int(upgrade.amount)
+			health = mini(health + int(upgrade.amount), max_health)
+			health_bar.max_value = max_health
+			health_bar.value = health
+		&"attack_range":
+			attack_range += upgrade.amount
+		&"move_speed":
+			move_speed *= upgrade.multiplier
+		_:
+			return false
+	return true
 
 
 func _play_damage_flash() -> void:

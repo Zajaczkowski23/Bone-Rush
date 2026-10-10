@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/upgrades/upgrade_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "WIDE SWING"
+description = "+15 sword range"
+stat = "attack_range"
+amount = 15.0

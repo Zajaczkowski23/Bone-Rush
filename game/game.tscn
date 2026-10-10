@@ -10,6 +10,22 @@
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D4.tres" id="wall_CollisionShape2D4"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D5.tres" id="wall_CollisionShape2D5"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShapeLine.tres" id="wall_CollisionShapeLine"]
+[ext_resource type="Script" path="res://game/level_progression.gd" id="level_progression"]
+[ext_resource type="PackedScene" path="res://game/level_up_panel.tscn" id="level_up_panel"]
+
+[sub_resource type="StyleBoxFlat" id="XPBackground"]
+bg_color = Color(0.055, 0.08, 0.11, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+
+[sub_resource type="StyleBoxFlat" id="XPFill"]
+bg_color = Color(0.36, 0.8, 0.62, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_player"]
 radius = 16.0
@@ -779,6 +795,9 @@ size = Vector2(186, 66)
 [node name="Node2D" type="Node2D" unique_id=191590412]
 script = ExtResource("3_game")
 
+[node name="LevelProgression" type="Node" parent="."]
+script = ExtResource("level_progression")
+
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2056443802 groups=["player"]]
 position = Vector2(576, 324)
 collision_mask = 3
@@ -829,6 +848,25 @@ offset_bottom = 32.0
 text = "SCORE: 0"
 horizontal_alignment = 2
 
+[node name="LevelLabel" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 64.0
+offset_right = 264.0
+offset_bottom = 86.0
+text = "LEVEL 1"
+mouse_filter = 2
+
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 88.0
+offset_right = 264.0
+offset_bottom = 108.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("XPBackground")
+theme_override_styles/fill = SubResource("XPFill")
+max_value = 50.0
+show_percentage = false
+
 [node name="GameOverLabel" type="Label" parent="CanvasLayer" unique_id=113283374]
 visible = false
 anchors_preset = 8
@@ -864,6 +902,8 @@ Cardinals = null
 Diagonals = null
 metadata/_custom_type_script = "uid://bu2f3k7cfx733"
 metadata/_edit_use_anchors_ = true
+
+[node name="LevelUpPanel" parent="CanvasLayer" instance=ExtResource("level_up_panel")]
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=433048243]
 z_index = -10
