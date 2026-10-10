@@ -2,7 +2,7 @@ extends Area2D
 
 signal defeated(points: int)
 
-const PlayArea = preload("res://game/play_area.gd")
+const PlayArea = preload("res://game/world/play_area.gd")
 const EDGE_MARGIN: float = 36.0
 
 @export var move_speed: float = 110.0

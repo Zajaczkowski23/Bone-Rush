@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://game/level_up_panel.gd" id="1"]
+[ext_resource type="Script" path="res://game/ui/level_up_panel.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 bg_color = Color(0.055, 0.08, 0.11, 1)

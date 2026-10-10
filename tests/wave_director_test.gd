@@ -16,11 +16,11 @@ func _expect(condition: bool, message: String) -> void:
 
 
 func _run() -> void:
-	if not ResourceLoader.exists("res://game/wave_director.gd"):
+	if not ResourceLoader.exists("res://game/waves/wave_director.gd"):
 		_expect(false, "Run must provide finite wave scheduling")
 		quit(1)
 		return
-	var director = load("res://game/wave_director.gd").new()
+	var director = load("res://game/waves/wave_director.gd").new()
 	root.add_child(director)
 	director.set_process(false)
 	director.spawn_requested.connect(func(boss: bool): spawns.append(boss))
@@ -83,7 +83,7 @@ func _run() -> void:
 	director.free()
 
 	# Automatic countdown and stop guards use a fresh run.
-	director = load("res://game/wave_director.gd").new()
+	director = load("res://game/waves/wave_director.gd").new()
 	root.add_child(director)
 	director.set_process(false)
 	director.start()

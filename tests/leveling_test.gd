@@ -113,16 +113,16 @@ func _run() -> void:
 	_expect(player.sword_damage == 10 and player.max_health == 100 and player.move_speed == 260, "New run must reset upgraded player stats")
 	player.take_damage(40, false)
 	for upgrade_id in ["damage", "health", "range", "speed"]:
-		var upgrade = load("res://game/upgrades/%s.tres" % upgrade_id)
+		var upgrade = load("res://game/progression/upgrades/%s.tres" % upgrade_id)
 		_expect(player.apply_upgrade(upgrade), "Living player must accept available upgrades")
 	_expect(player.sword_damage == 15 and player.attack_range == 115, "Damage and range upgrades must affect combat stats")
 	_expect(player.max_health == 120 and player.health == 80, "Health upgrade must raise maximum and heal by twenty")
 	_expect(game.get_node("CanvasLayer/PlayerHealthBar").max_value == 120 and game.get_node("CanvasLayer/PlayerHealthBar").value == 80, "Health HUD must immediately show the upgraded values")
 	_expect(is_equal_approx(player.move_speed, 286.0), "Speed upgrade must increase current speed by ten percent")
-	player.apply_upgrade(load("res://game/upgrades/speed.tres"))
+	player.apply_upgrade(load("res://game/progression/upgrades/speed.tres"))
 	_expect(is_equal_approx(player.move_speed, 314.6), "Repeated speed upgrades must multiply current speed")
 	player.health = player.max_health
-	player.apply_upgrade(load("res://game/upgrades/health.tres"))
+	player.apply_upgrade(load("res://game/progression/upgrades/health.tres"))
 	_expect(player.health == 140 and player.max_health == 140, "Health upgrade at full health must stay within the new maximum")
 	game.free()
 
@@ -155,7 +155,7 @@ func _run() -> void:
 	enemy = get_nodes_in_group("enemies")[0]
 	enemy.take_damage(100)
 	_expect(progression.xp == 0, "Dead player must not receive further kill XP")
-	_expect(not player.apply_upgrade(load("res://game/upgrades/health.tres")) and player.health == 0, "Health upgrade must not revive a dead player")
+	_expect(not player.apply_upgrade(load("res://game/progression/upgrades/health.tres")) and player.health == 0, "Health upgrade must not revive a dead player")
 	game.free()
 	if failures == 0:
 		print("PASS: independent kill XP, HUD, upgrade effects, paused choices, multiple rewards, selection guards, area kills, death and reset")

@@ -1,13 +1,13 @@
 extends Node2D
 
-const PlayArea = preload("res://game/play_area.gd")
+const PlayArea = preload("res://game/world/play_area.gd")
 const MINIBOSS_SCENE: PackedScene = preload("res://characters/enemies/miniboss/miniboss.tscn")
 const ENEMY_SCENE: PackedScene = preload("res://characters/enemies/enemy/enemy.tscn")
 const UPGRADES: Array[Resource] = [
-	preload("res://game/upgrades/damage.tres"),
-	preload("res://game/upgrades/health.tres"),
-	preload("res://game/upgrades/range.tres"),
-	preload("res://game/upgrades/speed.tres"),
+	preload("res://game/progression/upgrades/damage.tres"),
+	preload("res://game/progression/upgrades/health.tres"),
+	preload("res://game/progression/upgrades/range.tres"),
+	preload("res://game/progression/upgrades/speed.tres"),
 ]
 
 @export var max_enemies: int = 10

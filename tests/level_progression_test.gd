@@ -16,11 +16,11 @@ func _expect(condition: bool, message: String) -> void:
 
 
 func _run() -> void:
-	if not ResourceLoader.exists("res://game/level_progression.gd"):
+	if not ResourceLoader.exists("res://game/progression/level_progression.gd"):
 		_expect(false, "Run must provide an XP progression component")
 		quit(1)
 		return
-	var progression = load("res://game/level_progression.gd").new()
+	var progression = load("res://game/progression/level_progression.gd").new()
 	root.add_child(progression)
 	progression.leveled_up.connect(func(value: int): levels.append(value))
 	progression.xp_changed.connect(func(current: int, required: int): xp_updates.append([current, required]))
@@ -32,7 +32,7 @@ func _run() -> void:
 	progression.add_xp(0)
 	progression.add_xp(-20)
 	_expect(progression.xp == 0 and levels == [2] and xp_updates.size() == 2, "Nonpositive XP must not change progression or emit updates")
-	var fresh = load("res://game/level_progression.gd").new()
+	var fresh = load("res://game/progression/level_progression.gd").new()
 	root.add_child(fresh)
 	_expect(fresh.level == 1 and fresh.xp == 0, "New run must start with independent progression")
 	levels.clear()

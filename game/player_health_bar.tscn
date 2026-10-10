@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://ddh4svpyjwuif"]
+
+[ext_resource type="Texture2D" uid="uid://fqoylo8k84aw" path="res://assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Bars/SmallBar_Base.png" id="base"]
+[ext_resource type="Texture2D" uid="uid://ccbsaosils0i6" path="res://assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Bars/SmallBar_Fill.png" id="fill"]
+
+[sub_resource type="StyleBoxEmpty" id="Background"]
+content_margin_left = 6.0
+content_margin_top = 8.0
+content_margin_right = 6.0
+content_margin_bottom = 8.0
+
+[sub_resource type="AtlasTexture" id="FillTexture"]
+atlas = ExtResource("fill")
+region = Rect2(0, 30, 64, 3)
+
+[sub_resource type="StyleBoxTexture" id="Fill"]
+content_margin_left = 6.0
+content_margin_top = 0.0
+content_margin_right = 6.0
+content_margin_bottom = 0.0
+texture = SubResource("FillTexture")
+expand_margin_left = -6.0
+expand_margin_top = -8.0
+expand_margin_right = -6.0
+expand_margin_bottom = -8.0
+
+[sub_resource type="AtlasTexture" id="LeftCap"]
+atlas = ExtResource("base")
+region = Rect2(49, 22, 15, 19)
+
+[sub_resource type="AtlasTexture" id="Center"]
+atlas = ExtResource("base")
+region = Rect2(128, 22, 64, 19)
+
+[sub_resource type="AtlasTexture" id="RightCap"]
+atlas = ExtResource("base")
+region = Rect2(256, 22, 15, 19)
+
+[node name="PlayerHealthBar" type="ProgressBar" unique_id=340290501]
+texture_filter = 1
+custom_minimum_size = Vector2(30, 19)
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.94, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0.15, 0.07, 0.06, 1)
+theme_override_constants/outline_size = 2
+theme_override_styles/background = SubResource("Background")
+theme_override_styles/fill = SubResource("Fill")
+value = 100.0
+show_percentage = false
+
+[node name="LeftCap" type="TextureRect" parent="." unique_id=513913447]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 15.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = SubResource("LeftCap")
+
+[node name="Center" type="TextureRect" parent="." unique_id=576154251]
+show_behind_parent = true
+layout_mode = 0
+anchor_right = 1.0
+offset_left = 15.0
+offset_right = -15.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = SubResource("Center")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="RightCap" type="TextureRect" parent="." unique_id=565084471]
+show_behind_parent = true
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -15.0
+offset_bottom = 19.0
+mouse_filter = 2
+texture = SubResource("RightCap")

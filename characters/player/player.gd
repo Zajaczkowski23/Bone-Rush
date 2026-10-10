@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 signal died
 
-const PlayArea = preload("res://game/play_area.gd")
+const PlayArea = preload("res://game/world/play_area.gd")
 const SwordSweep = preload("res://characters/player/sword_sweep.gd")
-const UpgradeDefinition = preload("res://game/upgrades/upgrade_definition.gd")
+const UpgradeDefinition = preload("res://game/progression/upgrades/upgrade_definition.gd")
 const EDGE_MARGIN: float = 24.0
 
 @export var move_speed: float = 260.0
