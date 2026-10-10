@@ -15,7 +15,9 @@ func _run() -> void:
 		spawned.free()
 	var player = game.get_node("Player")
 	player.set_physics_process(false)
-	var enemy = load("res://characters/enemies/enemy/enemy.tscn").instantiate()
+	var is_miniboss := "--miniboss" in OS.get_cmdline_user_args()
+	var scene_path := "res://characters/enemies/miniboss/miniboss.tscn" if is_miniboss else "res://characters/enemies/enemy/enemy.tscn"
+	var enemy = load(scene_path).instantiate()
 	game.add_child(enemy)
 	enemy.set_physics_process(false)
 	_expect(enemy.get_node_or_null("NavigationAgent2D") != null, "Skeleton must follow a navigation path")
@@ -39,18 +41,19 @@ func _run() -> void:
 		_expect(enemy.get_world_2d().direct_space_state.intersect_ray(query).is_empty(), "Skeleton path must not cross a cliff")
 		if absf(enemy.global_position.x - 897) > 55:
 			went_around = true
-		if enemy.global_position.distance_to(player.global_position) <= 40 and enemy.sprite.animation == &"attack":
+		if enemy.global_position.distance_to(player.global_position) <= enemy.attack_range and enemy.sprite.animation == &"attack":
 			break
 	_expect(went_around, "Skeleton must take the side ramp instead of crossing the front wall")
-	_expect(enemy.global_position.distance_to(player.global_position) <= 40, "Skeleton must reach player on hilltop")
-	await create_timer(0.35).timeout
-	_expect(player.health == 90, "Skeleton must attack after reaching the hilltop")
+	_expect(enemy.global_position.distance_to(player.global_position) <= enemy.attack_range, "Skeleton must reach player on hilltop")
+	await create_timer(0.6 if is_miniboss else 0.35).timeout
+	_expect(player.health == (75 if is_miniboss else 90), "Skeleton must attack after reaching the hilltop")
 
 	# A wall appearing during the windup must also prevent damage.
 	await create_timer(0.3).timeout
 	player.global_position = Vector2(500, 300)
 	enemy.global_position = Vector2(528, 300)
-	enemy._physics_process(1.0)
+	enemy._physics_process(2.0)
+	_expect(enemy.sprite.animation == &"attack", "Wall test must begin with an active sword windup")
 	var wall = StaticBody2D.new()
 	wall.collision_layer = 2
 	wall.position = Vector2(514, 300)
@@ -60,8 +63,8 @@ func _run() -> void:
 	collision.shape = rectangle
 	wall.add_child(collision)
 	game.add_child(wall)
-	await create_timer(0.35).timeout
-	_expect(player.health == 90, "Wall must block damage at the actual swing frame")
+	await create_timer(0.6 if is_miniboss else 0.35).timeout
+	_expect(player.health == (75 if is_miniboss else 90), "Wall must block damage at the actual swing frame")
 	if failures == 0:
 		print("PASS: hill ramp navigation, no wall crossing, hilltop attack and blocked sword damage")
 	quit(1 if failures else 0)

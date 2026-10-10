@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://characters/enemies/enemy/enemy.tscn" id="1_enemy"]
+[ext_resource type="Script" path="res://characters/enemies/miniboss/miniboss.gd" id="2_script"]
+[ext_resource type="SpriteFrames" path="res://characters/enemies/miniboss/miniboss_frames.tres" id="3_frames"]
+
+[sub_resource type="StyleBoxFlat" id="HealthFill"]
+bg_color = Color(0.8, 0.22, 0.12, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_left = 3
+corner_radius_bottom_right = 3
+
+[sub_resource type="StyleBoxFlat" id="HealthBackground"]
+bg_color = Color(0.12, 0.09, 0.08, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.7, 0.5, 0.22, 1)
+
+[node name="BoneKing" instance=ExtResource("1_enemy") groups=["enemies", "minibosses"]]
+script = ExtResource("2_script")
+move_speed = 75.0
+max_health = 240
+contact_damage = 25
+score_value = 100
+xp_value = 80
+attack_range = 68.0
+attack_interval = 1.8
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+position = Vector2(0, -37)
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("3_frames")
+
+[node name="HealthBar" parent="." index="3"]
+offset_left = -42.0
+offset_top = -91.0
+offset_right = 42.0
+offset_bottom = -83.0
+theme_override_styles/fill = SubResource("HealthFill")
+theme_override_styles/background = SubResource("HealthBackground")
+
+[node name="BossName" type="Label" parent="." index="4"]
+offset_left = -65.0
+offset_top = -110.0
+offset_right = 65.0
+offset_bottom = -92.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.42, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+text = "BONE KING"
+horizontal_alignment = 1

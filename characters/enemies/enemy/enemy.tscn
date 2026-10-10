@@ -14,8 +14,9 @@ script = ExtResource("1_enemy")
 shape = SubResource("CircleShape2D_enemy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
+texture_filter = 2
 position = Vector2(0, -8)
+scale = Vector2(0.25, 0.25)
 sprite_frames = ExtResource("2_skeleton")
 animation = &"idle"
 autoplay = "idle"

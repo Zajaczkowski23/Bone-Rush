@@ -5,30 +5,30 @@
 [ext_resource type="Script" uid="uid://c0ee5wdq88ecc" path="res://game/game.gd" id="3_game"]
 [ext_resource type="SpriteFrames" uid="uid://bf3aaohihtcg2" path="res://characters/player/warrior_frames.tres" id="5_warrior"]
 [ext_resource type="Texture2D" uid="uid://ca3vlayt33joa" path="res://assets/Tiny Swords (Free Pack)/Terrain/Tileset/Tilemap_color1.png" id="6_dakft"]
+[ext_resource type="Script" uid="uid://c7d2a2nu5xuiq" path="res://game/level_progression.gd" id="level_progression"]
+[ext_resource type="PackedScene" path="res://game/level_up_panel.tscn" id="level_up_panel"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D2.tres" id="wall_CollisionShape2D2"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D3.tres" id="wall_CollisionShape2D3"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D4.tres" id="wall_CollisionShape2D4"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShape2D5.tres" id="wall_CollisionShape2D5"]
 [ext_resource type="Shape2D" path="res://game/hill_wall_CollisionShapeLine.tres" id="wall_CollisionShapeLine"]
-[ext_resource type="Script" path="res://game/level_progression.gd" id="level_progression"]
-[ext_resource type="PackedScene" path="res://game/level_up_panel.tscn" id="level_up_panel"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
+radius = 16.0
 
 [sub_resource type="StyleBoxFlat" id="XPBackground"]
 bg_color = Color(0.055, 0.08, 0.11, 0.9)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
-corner_radius_bottom_left = 4
 corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="XPFill"]
 bg_color = Color(0.36, 0.8, 0.62, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
-corner_radius_bottom_left = 4
 corner_radius_bottom_right = 4
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
-radius = 16.0
+corner_radius_bottom_left = 4
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5opy"]
 texture = ExtResource("6_dakft")
@@ -795,7 +795,7 @@ size = Vector2(186, 66)
 [node name="Node2D" type="Node2D" unique_id=191590412]
 script = ExtResource("3_game")
 
-[node name="LevelProgression" type="Node" parent="."]
+[node name="LevelProgression" type="Node" parent="." unique_id=376924936]
 script = ExtResource("level_progression")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2056443802 groups=["player"]]
@@ -848,15 +848,14 @@ offset_bottom = 32.0
 text = "SCORE: 0"
 horizontal_alignment = 2
 
-[node name="LevelLabel" type="Label" parent="CanvasLayer"]
+[node name="LevelLabel" type="Label" parent="CanvasLayer" unique_id=301716721]
 offset_left = 24.0
 offset_top = 64.0
 offset_right = 264.0
 offset_bottom = 86.0
 text = "LEVEL 1"
-mouse_filter = 2
 
-[node name="XPBar" type="ProgressBar" parent="CanvasLayer"]
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer" unique_id=899502335]
 offset_left = 24.0
 offset_top = 88.0
 offset_right = 264.0
@@ -903,7 +902,7 @@ Diagonals = null
 metadata/_custom_type_script = "uid://bu2f3k7cfx733"
 metadata/_edit_use_anchors_ = true
 
-[node name="LevelUpPanel" parent="CanvasLayer" instance=ExtResource("level_up_panel")]
+[node name="LevelUpPanel" parent="CanvasLayer" unique_id=1004424130 instance=ExtResource("level_up_panel")]
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=433048243]
 z_index = -10
@@ -953,3 +952,7 @@ shape = ExtResource("wall_CollisionShape2D4")
 position = Vector2(1698, 1057)
 rotation = 1.5707964
 shape = ExtResource("wall_CollisionShape2D5")
+
+[node name="MinibossSpawnTimer" type="Timer" parent="." unique_id=968461674]
+wait_time = 30.0
+autostart = true

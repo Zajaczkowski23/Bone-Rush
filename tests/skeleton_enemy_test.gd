@@ -30,7 +30,7 @@ func _run() -> void:
 	for animation in [&"idle", &"run", &"attack", &"death"]:
 		for frame in range(sprite.sprite_frames.get_frame_count(animation)):
 			var image: Image = sprite.sprite_frames.get_frame_texture(animation, frame).get_image()
-			_expect(image.get_size() == Vector2i(64, 64) and not image.is_invisible(), "Every skeleton frame must contain visible correctly sliced graphics")
+			_expect(image.get_size() == Vector2i(256, 256) and not image.is_invisible(), "Every skeleton frame must contain visible correctly sliced graphics")
 	await create_timer(0.1).timeout
 	enemy.global_position = player.global_position + Vector2(150, 0)
 	var initial_position: Vector2 = enemy.global_position

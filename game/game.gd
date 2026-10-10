@@ -1,6 +1,7 @@
 extends Node2D
 
 const PlayArea = preload("res://game/play_area.gd")
+const MINIBOSS_SCENE: PackedScene = preload("res://characters/enemies/miniboss/miniboss.tscn")
 const ENEMY_SCENE: PackedScene = preload("res://characters/enemies/enemy/enemy.tscn")
 const UPGRADES: Array[Resource] = [
 	preload("res://game/upgrades/damage.tres"),
@@ -28,6 +29,7 @@ func _ready() -> void:
 	progression.leveled_up.connect(_on_leveled_up)
 	level_up_panel.upgrade_selected.connect(_on_upgrade_selected)
 	_update_xp_hud(progression.xp, progression.xp_required)
+	$MinibossSpawnTimer.timeout.connect(_spawn_miniboss)
 	$EnemySpawnTimer.timeout.connect(_spawn_enemy)
 	_spawn_enemy()
 
@@ -40,6 +42,15 @@ func _spawn_enemy() -> void:
 	enemy.connect("defeated", _on_enemy_defeated.bind(enemy))
 	add_child(enemy)
 	enemy.global_position = PlayArea.random_edge_position(self, 36.0)
+
+
+func _spawn_miniboss() -> void:
+	if player.health <= 0 or not get_tree().get_nodes_in_group("minibosses").is_empty():
+		return
+	var miniboss := MINIBOSS_SCENE.instantiate() as Area2D
+	miniboss.defeated.connect(_on_enemy_defeated.bind(miniboss))
+	add_child(miniboss)
+	miniboss.global_position = PlayArea.random_edge_position(self, 36.0)
 
 
 func _on_enemy_defeated(points: int, enemy: Area2D) -> void:

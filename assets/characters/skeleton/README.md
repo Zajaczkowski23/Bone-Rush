@@ -10,3 +10,7 @@ Original skeleton enemy generated with the built-in ImageGen tool, then downscal
 Each exported PNG is 384 x 64 with six 64 x 64 frames, transparent background and nearest-neighbor pixels. Godot uses `characters/enemies/enemy/skeleton_frames.tres` and `enemy.tscn`. All spawned enemies are chasing skeletons.
 
 Prompt: original sword skeleton compatible with Tiny Swords fantasy pixel art; chunky ivory skull, dark navy outline, bone ribs and limbs, muted burgundy waist cloth, leather boots and rusty steel sword; four rows of six consistent idle, walking, sword attack and collapsing-bones death frames, transparent background, no labels.
+
+## Smooth display variant
+
+Godot now uses `Skeleton_*_Smooth.png`: six 256 x 256 frames per sheet, exported from the original source in LibreSprite. The sprite is scaled to 0.25 with linear filtering, keeping the same world size and collisions while softening pixel edges. Frame counts and animation timings are unchanged. Edit the Smooth PNG files to update the active graphics. The original 64 x 64 exports and editable atlas are preserved.
