@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://game/waves/wave_director.gd" id="wave_director"]
 [ext_resource type="PackedScene" path="res://game/ui/victory_panel.tscn" id="victory_panel"]
 [ext_resource type="PackedScene" path="res://game/ui/player_health_bar.tscn" id="player_health_bar"]
+[ext_resource type="Script" path="res://game/world/impact_camera.gd" id="impact_camera"]
 [ext_resource type="Shape2D" path="res://game/world/collisions/hill_wall_CollisionShape2D2.tres" id="wall_CollisionShape2D2"]
 [ext_resource type="Shape2D" path="res://game/world/collisions/hill_wall_CollisionShape2D3.tres" id="wall_CollisionShape2D3"]
 [ext_resource type="Shape2D" path="res://game/world/collisions/hill_wall_CollisionShape2D4.tres" id="wall_CollisionShape2D4"]
@@ -808,6 +809,7 @@ script = ExtResource("2_player")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1106084305]
 zoom = Vector2(2, 2)
+script = ExtResource("impact_camera")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1558459887]
 shape = SubResource("CircleShape2D_player")

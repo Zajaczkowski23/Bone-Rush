@@ -71,6 +71,7 @@ func _spawn_miniboss() -> Area2D:
 		return null
 	var miniboss := MINIBOSS_SCENE.instantiate() as Area2D
 	miniboss.defeated.connect(_on_enemy_defeated.bind(miniboss))
+	miniboss.heavy_sword_impact.connect($Player/Camera2D.shake_from)
 	add_child(miniboss)
 	miniboss.global_position = PlayArea.random_edge_position(self, 36.0)
 	return miniboss

@@ -1,5 +1,14 @@
 extends "res://characters/enemies/enemy/enemy.gd"
 
+signal heavy_sword_impact(world_position: Vector2)
+
+
+func _on_attack_frame_changed() -> void:
+	var is_impact := health > 0 and _is_attacking and not _swing_has_hit and sprite.animation == &"attack" and sprite.frame == 3
+	super._on_attack_frame_changed()
+	if is_impact:
+		heavy_sword_impact.emit(global_position)
+
 
 func _process(_delta: float) -> void:
 	queue_redraw()
